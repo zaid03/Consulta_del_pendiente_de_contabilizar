@@ -53,10 +53,7 @@ class FdeControllerTest {
     private ProjectionContabilizar mockFactura2;
 
     @BeforeEach
-    void setUp() throws Exception {
-        // Filters are disabled via @AutoConfigureMockMvc(addFilters = false)
-        // No need to configure JWT filter mock
-        
+    void setUp() throws Exception {        
         mockFactura1 = new MockProjection(
             1, "REF001", "OPE1", "ORG1", "FUN1", "ECO001", "SUB1", 100.0, 0.0,
             "CGEC01", "DOC001", null, 12345678, 100.0, 2024, 1, LocalDateTime.now(),
@@ -73,8 +70,6 @@ class FdeControllerTest {
         mockFacturas.add(mockFactura1);
         mockFacturas.add(mockFactura2);
     }
-
-    // ==================== fetchContabilizado TESTS ====================
 
     @Test
     void testFetchContabilizadoSuccess() throws Exception {
@@ -157,8 +152,6 @@ class FdeControllerTest {
 
         verify(fdeRepository, times(1)).findPendienteContabilizar(99, "TEST");
     }
-
-    // ==================== searchContabilizado TESTS ====================
 
     @Test
     void testSearchContabilizadoWithAllFilters() throws Exception {
@@ -360,7 +353,6 @@ class FdeControllerTest {
         when(contabilizarSearch.searchContabilizado(1, "2024", null, null, null, null))
             .thenReturn(mockFacturas);
 
-        // Verify correct HTTP method (GET)
         mockMvc.perform(get("/api/fde/search-pendiente-contabilizar")
                 .param("ent", "1")
                 .param("eje", "2024"))
@@ -371,7 +363,6 @@ class FdeControllerTest {
     void testFetchContabilizadoRequestMappingVerification() throws Exception {
         when(fdeRepository.findPendienteContabilizar(1, "2024")).thenReturn(mockFacturas);
 
-        // Verify correct HTTP method (GET)
         mockMvc.perform(get("/api/fde/fetch-pendiente-del-contabilizar/1/2024"))
             .andExpect(status().isOk());
     }
@@ -389,8 +380,6 @@ class FdeControllerTest {
 
         verify(contabilizarSearch, times(1)).searchContabilizado(1, "2024", "", null, null, null);
     }
-
-    // ==================== MOCK PROJECTION CLASS ====================
 
     static class MockProjection implements ProjectionContabilizar {
         private Integer facnum;
